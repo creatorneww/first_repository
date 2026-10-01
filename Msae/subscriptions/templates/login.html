@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | FreshCrunch Salad Subscriptions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-emerald-50 flex items-center justify-center h-screen">
+    <div class="bg-white p-8 rounded-xl shadow-md w-96">
+        <h2 class="text-2xl font-bold text-emerald-700 mb-6 text-center">Welcome Back 🥗</h2>
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="w-full bg-emerald-600 text-white p-2 rounded-lg font-semibold hover:bg-emerald-700 transition">Log In</button>
+        </form>
+        <p class="text-sm text-center mt-4 text-gray-600">New here? <a href="{% url 'signup' %}" class="text-emerald-600 font-medium">Sign up</a></p>
+    </div>
+</body>
+</html>

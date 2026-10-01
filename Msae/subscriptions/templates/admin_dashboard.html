@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | Salad Kitchen Fulfillment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-xl shadow">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">🥗 Salad Kitchen Order Fulfillment</h2>
+            <a href="{% url 'welcome' %}" class="text-sm text-emerald-600 font-semibold hover:underline">Back to App</a>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-3 font-medium text-gray-900">Customer</th>
+                        <th class="p-3 font-medium text-gray-900">Plan</th>
+                        <th class="p-3 font-medium text-gray-900">Delivery Address</th>
+                        <th class="p-3 font-medium text-gray-900">Current Status</th>
+                        <th class="p-3 font-medium text-gray-900">Action / Update Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for sub in subscriptions %}
+                    <tr>
+                        <td class="p-3 font-semibold text-gray-800">{{ sub.user.username }}</td>
+                        <td class="p-3">{{ sub.get_plan_display }}</td>
+                        <td class="p-3 max-w-xs truncate">{{ sub.delivery_address }}</td>
+                        <td class="p-3">
+                            <span class="px-2 py-1 rounded text-xs font-semibold 
+                                {% if sub.order_status == 'pending' %} bg-yellow-100 text-yellow-800 
+                                {% elif sub.order_status == 'preparing' %} bg-blue-100 text-blue-800 
+                                {% elif sub.order_status == 'out_for_delivery' %} bg-purple-100 text-purple-800 
+                                {% elif sub.order_status == 'delivered' %} bg-green-100 text-green-800 
+                                {% else %} bg-red-100 text-red-800 {% endif %}">
+                                {{ sub.get_order_status_display }}
+                            </span>
+                        </td>
+                        <td class="p-3">
+                            <form method="POST" class="flex space-x-2">
+                                {% csrf_token %}
+                                <input type="hidden" name="subscription_id" value="{{ sub.id }}">
+                                <select name="order_status" class="border border-gray-300 rounded text-xs p-1">
+                                    <option value="pending" {% if sub.order_status == 'pending' %}selected{% endif %}>Pending</option>
+                                    <option value="preparing" {% if sub.order_status == 'preparing' %}selected{% endif %}>Preparing</option>
+                                    <option value="out_for_delivery" {% if sub.order_status == 'out_for_delivery' %}selected{% endif %}>Out for Delivery</option>
+                                    <option value="delivered" {% if sub.order_status == 'delivered' %}selected{% endif %}>Delivered</option>
+                                    <option value="cancelled" {% if sub.order_status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                                </select>
+                                <button type="submit" class="bg-emerald-600 text-white px-3 py-1 rounded text-xs hover:bg-emerald-700">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="p-4 text-center text-gray-500">No subscriptions found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

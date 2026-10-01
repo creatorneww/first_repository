@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | FreshCrunch Salads</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <nav class="bg-emerald-600 text-white p-4 flex justify-between items-center shadow">
+        <h1 class="text-xl font-bold">FreshCrunch Subscriptions</h1>
+        <form action="{% url 'logout' %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="bg-emerald-700 px-4 py-2 rounded text-sm hover:bg-emerald-800">Logout</button>
+        </form>
+    </nav>
+
+    <div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-xl shadow">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Welcome, {{ request.user.username }}! 🎉</h2>
+
+        {% if subscription %}
+            <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-lg mb-6">
+                <h3 class="font-bold text-emerald-800 text-lg">Active Subscription: {{ subscription.get_plan_display }}</h3>
+                <p class="text-gray-700 mt-1">Delivery Address: {{ subscription.delivery_address }}</p>
+                <p class="text-gray-700 mt-1">Current Order Status: <span class="font-semibold uppercase text-emerald-600">{{ subscription.get_order_status_display }}</span></p>
+            </div>
+            <h4 class="text-lg font-semibold text-gray-700 mb-2">Modify Your Plan</h4>
+        {% else %}
+            <p class="text-gray-600 mb-4">You do not have an active salad subscription yet. Choose a weekly plan below!</p>
+        {% endif %}
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Select Subscription Plan</label>
+                <select name="plan" class="w-full mt-1 p-2 border border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500">
+                    <option value="basic">Basic Greens (3 Salads/Week)</option>
+                    <option value="pro">Protein Power (5 Salads/Week)</option>
+                    <option value="keto">Keto Cleanse (5 Salads/Week)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Delivery Address</label>
+                <textarea name="address" required rows="3" class="w-full mt-1 p-2 border border-gray-300 rounded-lg" placeholder="Enter street, apartment, or office details"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-emerald-600 text-white p-3 rounded-lg font-semibold hover:bg-emerald-700 transition">Save / Update Subscription</button>
+        </form>
+    </div>
+</body>
+</html>

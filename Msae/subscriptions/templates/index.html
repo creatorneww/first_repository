@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savian's Kitchen — Fresh, built weekly.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF0E2;
+    --paper-2: #E4E7D4;
+    --ink: #212F1C;
+    --ink-soft: #4A5842;
+    --citrus: #DD5328;
+    --gold: #E2A13B;
+    --leaf: #6B8F4E;
+    --leaf-2: #8CA968;
+    --card: #FFFDF6;
+    --line: #C4C9AE;
+    --line-strong: #9AA184;
+    --shadow: rgba(33,47,28,0.12);
+    --radius: 2px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+  h1,h2,h3{font-family:'Fraunces',serif;margin:0;line-height:1.05;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--citrus);
+    font-weight:600;
+  }
+  :focus-visible{outline:3px solid var(--citrus); outline-offset:3px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(238,240,226,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height:104px;
+  }
+  .logo{
+    font-family:'Fraunces',serif;
+    font-weight:600; font-size:26px;
+    letter-spacing:-0.01em;
+    display:flex; align-items:center; gap:12px;
+  }
+  .logo .mark{
+    width:44px;height:44px;
+    flex-shrink:0;
+  }
+  .navlinks{display:flex; align-items:center; gap:36px; font-size:15.5px; font-weight:500;}
+  .navlinks a{text-decoration:none; color:var(--ink-soft); transition:color .15s;}
+  .navlinks a:hover{color:var(--ink);}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px; font-weight:600; letter-spacing:0.03em;
+    padding:12px 22px;
+    border-radius:var(--radius);
+    border:1.5px solid var(--ink);
+    background:var(--ink); color:var(--paper);
+    cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px;
+    text-decoration:none;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:3px 4px 0 var(--citrus);}
+  .btn.ghost{background:transparent; color:var(--ink); border-color:var(--line-strong);}
+  .btn.ghost:hover{box-shadow:3px 4px 0 var(--line-strong);}
+  .navcta{display:none;}
+  @media(min-width:860px){ .navcta{display:inline-flex;} }
+  .navlinks{display:none;}
+  @media(min-width:860px){ .navlinks{display:flex;} }
+  .burger{display:flex; background:none; border:none; cursor:pointer; padding:6px;}
+  @media(min-width:860px){ .burger{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:76px 0 90px;
+    position:relative;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1fr; gap:56px; align-items:center;
+  }
+  @media(min-width:920px){ .hero-grid{grid-template-columns:1.05fr 0.95fr;} }
+  .hero h1{
+    font-size:clamp(40px,6vw,68px);
+    font-weight:600;
+    letter-spacing:-0.015em;
+  }
+  .hero h1 em{
+    font-style:italic; font-weight:500; color:var(--citrus);
+  }
+  .hero p.lede{
+    font-size:18px; line-height:1.6; color:var(--ink-soft);
+    max-width:44ch; margin:22px 0 30px;
+  }
+  .hero-ctas{display:flex; flex-wrap:wrap; gap:14px; align-items:center;}
+  .trust-row{
+    margin-top:28px; display:flex; align-items:center; gap:16px;
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);
+  }
+  .trust-row .dot{width:5px;height:5px;border-radius:50%;background:var(--line-strong);}
+
+  /* ticket mockup */
+  .ticket-stage{ position:relative; display:flex; justify-content:center; }
+  .ticket-inner{ position:relative; display:inline-block; }
+  .ticket{
+    width:100%; max-width:360px;
+    background:var(--card);
+    box-shadow:0 22px 45px var(--shadow), 0 2px 0 var(--line);
+    border-radius:3px;
+    padding:26px 24px 30px;
+    position:relative;
+    transform:rotate(2.5deg);
+    animation:ticketIn .7s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes ticketIn{
+    from{opacity:0; transform:rotate(2.5deg) translateY(26px);}
+    to{opacity:1; transform:rotate(2.5deg) translateY(0);}
+  }
+  .ticket::before, .ticket::after{
+    content:""; position:absolute; left:0; right:0; height:14px;
+    background-image:radial-gradient(circle 7px, var(--paper) 7px, transparent 7.5px);
+    background-size:22px 22px; background-repeat:repeat-x; background-position:2px center;
+  }
+  .ticket::before{top:-7px;}
+  .ticket::after{bottom:-7px;}
+  .ticket-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    border-bottom:1.5px dashed var(--line-strong); padding-bottom:14px; margin-bottom:16px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .ticket-head .brand{font-size:11px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;}
+  .ticket-head .num{font-size:11px; color:var(--ink-soft); text-align:right;}
+  .ticket-salad-name{font-family:'Fraunces',serif; font-weight:600; font-size:22px; margin:4px 0 12px; line-height:1.15;}
+  .ticket-list{list-style:none; margin:0 0 16px; padding:0; font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink-soft);}
+  .ticket-list li{display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dotted var(--line);}
+  .ticket-stamp{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; font-weight:600;
+    color:#3E6B3B; border:1.5px solid #3E6B3B; border-radius:3px; padding:4px 9px;
+    transform:rotate(-3deg);
+  }
+  .ticket-foot{display:flex; justify-content:space-between; align-items:center; margin-top:18px; padding-top:14px; border-top:1.5px dashed var(--line-strong);}
+  .ticket-price{font-family:'Fraunces',serif; font-weight:600; font-size:20px; color:var(--citrus);}
+  .float-tag{
+    position:absolute; background:var(--gold); color:var(--ink); font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:700; padding:8px 12px; border-radius:2px; box-shadow:0 8px 18px var(--shadow);
+    transform:rotate(-6deg);
+  }
+  .float-tag.a{ top:-14px; right:-6px; }
+  @media(max-width:920px){ .float-tag.a{display:none;} }
+
+  /* ---------- SECTION generic ---------- */
+  section{padding:96px 0;}
+  .section-head{max-width:600px; margin-bottom:56px;}
+  .section-head h2{font-size:clamp(30px,4vw,42px); font-weight:600; margin-top:12px;}
+  .section-head p{color:var(--ink-soft); font-size:16.5px; line-height:1.6; margin-top:14px;}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:2px;
+    background:var(--line); border:1px solid var(--line); border-radius:3px; overflow:hidden;
+  }
+  .step{background:var(--card); padding:34px 28px;}
+  .step .step-no{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--citrus); font-weight:600;}
+  .step h3{font-size:21px; margin:14px 0 10px; font-weight:600;}
+  .step p{color:var(--ink-soft); font-size:14.5px; line-height:1.55; margin:0;}
+
+  /* ---------- PLANS ---------- */
+  .plans{display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:22px;}
+  .plan{
+    background:var(--card); border:1.5px solid var(--line); border-radius:3px;
+    padding:32px 28px; display:flex; flex-direction:column; position:relative;
+    transition:border-color .15s, transform .15s;
+  }
+  .plan:hover{border-color:var(--line-strong); transform:translateY(-4px);}
+  .plan.popular{border-color:var(--citrus); box-shadow:0 14px 30px var(--shadow);}
+  .plan .pop-badge{
+    position:absolute; top:-13px; left:28px; background:var(--citrus); color:#fff;
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; padding:5px 10px; border-radius:2px;
+  }
+  .plan h3{font-size:22px; font-weight:600;}
+  .plan .price{font-family:'Fraunces',serif; font-size:40px; font-weight:600; margin:14px 0 2px;}
+  .plan .price span{font-family:'Inter',sans-serif; font-size:14px; font-weight:500; color:var(--ink-soft);}
+  .plan .sub{font-size:13.5px; color:var(--ink-soft); margin-bottom:22px;}
+  .plan ul{list-style:none; padding:0; margin:0 0 26px; flex:1;}
+  .plan li{font-size:14.5px; padding:8px 0; border-bottom:1px dotted var(--line); display:flex; gap:9px;}
+  .plan li::before{content:"—"; color:var(--citrus); flex-shrink:0;}
+
+  /* ---------- MENU CAROUSEL ---------- */
+  .menu-scroll{
+    display:flex; gap:18px; overflow-x:auto; padding-bottom:12px; scroll-snap-type:x mandatory;
+    -ms-overflow-style:none; scrollbar-width:thin;
+  }
+  .menu-card{
+    scroll-snap-align:start; flex:0 0 auto; width:250px;
+    background:var(--card); border:1px solid var(--line); border-radius:3px; padding:22px;
+  }
+  .menu-card .tag{font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em;}
+  .menu-card h4{font-family:'Fraunces',serif; font-size:19px; font-weight:600; margin:8px 0 10px;}
+  .menu-card p{font-size:13.5px; color:var(--ink-soft); line-height:1.5; margin:0;}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .notes{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:24px;}
+  .note{
+    background:var(--card); border:1px solid var(--line); border-radius:3px;
+    padding:26px; position:relative; box-shadow:0 8px 20px var(--shadow);
+  }
+  .note:nth-child(2){transform:rotate(-1deg);}
+  .note:nth-child(3){transform:rotate(1deg);}
+  .note p{font-family:'Fraunces',serif; font-style:italic; font-size:17px; line-height:1.5; margin:0 0 16px;}
+  .note .who{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em;}
+
+  /* ---------- CTA / FOOTER ---------- */
+  .cta-band{
+    background:var(--ink); color:var(--paper); border-radius:4px; padding:64px 44px;
+    display:flex; flex-wrap:wrap; gap:32px; align-items:center; justify-content:space-between;
+  }
+  .cta-band h2{color:var(--paper); font-size:clamp(26px,3.6vw,36px);}
+  .cta-band p{color:#C6CBB6; margin-top:10px; max-width:40ch;}
+  .cta-band form{display:flex; gap:10px; flex-wrap:wrap;}
+  .cta-band input[type=email]{
+    font-family:'Inter',sans-serif; font-size:14.5px; padding:13px 16px; border-radius:2px;
+    border:1.5px solid #4A5842; background:#2A3924; color:var(--paper); min-width:220px;
+  }
+  .cta-band input[type=email]::placeholder{color:#8B9578;}
+  .cta-band .btn{background:var(--citrus); border-color:var(--citrus); color:#fff;}
+  .cta-band .btn:hover{box-shadow:3px 4px 0 var(--gold);}
+
+  footer{padding:56px 0 40px; font-size:13.5px; color:var(--ink-soft);}
+  .footer-grid{display:flex; flex-wrap:wrap; justify-content:space-between; gap:24px; border-top:1px solid var(--line); padding-top:32px;}
+  .footer-links{display:flex; gap:26px; flex-wrap:wrap;}
+  .footer-links a{text-decoration:none; color:var(--ink-soft);}
+  .footer-links a:hover{color:var(--ink);}
+
+  .mobile-menu{
+    display:none; flex-direction:column; gap:2px; background:var(--card);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{padding:16px 32px; text-decoration:none; color:var(--ink); font-weight:500; border-bottom:1px solid var(--line);}
+
+  /* ---------- BOWL ILLUSTRATIONS ---------- */
+  .bowl-icon{display:block;}
+  .bowl-icon.hero-bowl{
+    position:absolute; width:170px; height:170px;
+    left:-60px; bottom:-26px; z-index:-1;
+    filter:drop-shadow(0 16px 20px var(--shadow));
+    animation:bowlIn .8s .15s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes bowlIn{ from{opacity:0; transform:translateY(20px) rotate(-6deg);} to{opacity:1; transform:translateY(0) rotate(-6deg);} }
+  @media(max-width:920px){ .bowl-icon.hero-bowl{position:static; margin:0 auto 24px; width:150px; height:150px; z-index:1;} }
+  .menu-card .bowl-icon{width:64px; height:64px; margin-bottom:10px;}
+  .plan .bowl-icon{width:46px; height:46px; margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">
+      <svg class="mark bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/>
+        <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+        <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+        <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+        <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+        <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+        <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+        <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+        <path d="M70 56 Q76 52 80 58" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      Savian's Kitchen
+    </div>
+    <div class="navlinks">
+      <a href="#how">How it works</a>
+      <a href="#plans">Plans</a>
+      <a href="#menu">This week</a>
+      <a href="#reviews">Reviews</a>
+    </div>
+    <div style="display:flex; align-items:center; gap:14px;">
+      <a href="#plans" class="btn navcta">Start subscription</a>
+      <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false">
+        <svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M0 1H22M0 8H22M0 15H22" stroke="#212F1C" stroke-width="2"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#how">How it works</a>
+    <a href="#plans">Plans</a>
+    <a href="#menu">This week</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#plans">Start subscription →</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Weekly salad subscription</span>
+        <h1>Fresh, <em>built weekly.</em></h1>
+        <p class="lede">A new bowl, chopped and dressed the morning it ships — delivered chilled to your door on your schedule. No prep, no soggy day-three lettuce, no thinking about lunch.</p>
+        <div class="hero-ctas">
+          <a href="#plans" class="btn">Start your subscription →</a>
+          <a href="#menu" class="btn ghost">See this week's menu</a>
+        </div>
+        <div class="trust-row">
+          <span>Cancel anytime</span><span class="dot"></span>
+          <span>Packed same-day</span><span class="dot"></span>
+          <span>Skip a week, no charge</span>
+        </div>
+      </div>
+      <div class="ticket-stage">
+        <div class="ticket-inner">
+        <svg class="bowl-icon hero-bowl" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--card)" stroke="var(--ink)" stroke-width="2.5"/>
+          <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M28 46 Q18 32 32 24 Q40 36 28 46Z" fill="var(--leaf)"/>
+          <path d="M48 40 Q44 24 62 22 Q64 38 48 40Z" fill="var(--leaf-2)"/>
+          <path d="M66 46 Q64 30 80 28 Q82 42 66 46Z" fill="var(--leaf)"/>
+          <path d="M38 44 Q40 30 26 26 Q22 40 38 44Z" fill="var(--leaf-2)"/>
+          <circle cx="40" cy="52" r="7" fill="var(--citrus)"/>
+          <circle cx="62" cy="55" r="6" fill="var(--citrus)"/>
+          <circle cx="50" cy="49" r="4.5" fill="var(--citrus)"/>
+          <ellipse cx="53" cy="61" rx="6" ry="4" fill="var(--gold)"/>
+          <ellipse cx="34" cy="61" rx="5" ry="3.5" fill="var(--gold)"/>
+          <path d="M70 57 Q78 52 83 59" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M20 55 Q13 50 17 43" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
+        </svg>
+        <div class="float-tag a">PACKED THIS MORNING</div>
+        <div class="ticket">
+          <div class="ticket-head">
+            <span class="brand">Savian's Kitchen</span>
+            <span class="num">ORDER NO. 0142<br>WEEK OF AUG 17</span>
+          </div>
+          <div class="ticket-salad-name">Smoky Corn &amp; Black Bean</div>
+          <ul class="ticket-list">
+            <li><span>Charred corn, black beans</span></li>
+            <li><span>Baby gem, pickled red onion</span></li>
+            <li><span>Cotija, crispy tortilla</span></li>
+            <li><span>Chipotle-lime crema</span></li>
+          </ul>
+          <span class="ticket-stamp">● Fresh — delivers today</span>
+          <div class="ticket-foot">
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:11.5px; color:var(--ink-soft);">1 of 5 this week</span>
+            <span class="ticket-price">₹200</span>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">The process</span>
+        <h2>Three steps. Every week.</h2>
+        <p>Subscriptions only work if you can forget about them and trust it'll show up right. Here's exactly what happens between you signing up and lunch arriving.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="step-no">01</span>
+          <h3>Pick your plan</h3>
+          <p>Choose how many bowls land on your counter each week, and which day works for your schedule.</p>
+        </div>
+        <div class="step">
+          <span class="step-no">02</span>
+          <h3>We build it fresh</h3>
+          <p>Every bowl is chopped, portioned, and dressed the same morning it ships — never more than a day old.</p>
+        </div>
+        <div class="step">
+          <span class="step-no">03</span>
+          <h3>Delivered chilled</h3>
+          <p>It arrives packed cold, ready to eat straight from the fridge. Swap or skip a week anytime before Sunday.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="plans" style="background:var(--paper-2);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Membership</span>
+        <h2>Plans built around how you eat.</h2>
+        <p>Every bowl is ₹200, whichever plan you choose. Every plan includes free delivery, weekly menu rotation, and the ability to skip or swap before Sunday at midnight.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <svg class="bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+            <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+            <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+            <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+            <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+            <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+            <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+          </svg>
+          <h3>The Starter</h3>
+          <div class="price">₹600<span>/week</span></div>
+          <div class="sub">3 bowls — solo lunches, sorted</div>
+          <ul>
+            <li>3 bowls per week</li>
+            <li>Full weekly menu rotation</li>
+            <li>Free chilled delivery</li>
+            <li>Skip or swap anytime</li>
+          </ul>
+          <a href="#" class="btn ghost" style="justify-content:center;">Choose Starter</a>
+        </div>
+        <div class="plan popular">
+          <span class="pop-badge">Most popular</span>
+          <svg class="bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+            <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+            <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+            <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+            <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+            <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+            <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+          </svg>
+          <h3>The Regular</h3>
+          <div class="price">₹1,000<span>/week</span></div>
+          <div class="sub">5 bowls — one for every workday</div>
+          <ul>
+            <li>5 bowls per week</li>
+            <li>Full weekly menu rotation</li>
+            <li>Free chilled delivery</li>
+            <li>Priority delivery window</li>
+            <li>Skip or swap anytime</li>
+          </ul>
+          <a href="#" class="btn" style="justify-content:center;">Choose Regular</a>
+        </div>
+        <div class="plan">
+          <svg class="bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+            <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+            <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+            <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+            <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+            <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+            <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+          </svg>
+          <h3>The Family</h3>
+          <div class="price">₹2,000<span>/week</span></div>
+          <div class="sub">10 bowls — feeds a household</div>
+          <ul>
+            <li>10 bowls per week</li>
+            <li>Full weekly menu rotation</li>
+            <li>Free chilled delivery</li>
+            <li>Mix sizes across the household</li>
+            <li>Skip or swap anytime</li>
+          </ul>
+          <a href="#" class="btn ghost" style="justify-content:center;">Choose Family</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Week of Aug 17</span>
+        <h2>This week's rotation.</h2>
+        <p>The lineup changes every week with what's in season. Here's what's shipping right now.</p>
+      </div>
+      <div class="menu-scroll">
+        <div class="menu-card">
+          <svg class="bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+            <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+            <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+            <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+            <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+            <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+            <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+            <path d="M70 56 Q76 52 80 58" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="tag">Bowl 1</span>
+          <h4>Smoky Corn &amp; Black Bean</h4>
+          <p>Charred corn, black beans, baby gem, cotija, chipotle-lime crema.</p>
+        </div>
+        <div class="menu-card">
+          <svg class="bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+            <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+            <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+            <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+            <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+            <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+            <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+            <path d="M70 56 Q76 52 80 58" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="tag">Bowl 2</span>
+          <h4>Roasted Beet &amp; Citrus</h4>
+          <p>Roasted beets, blood orange, arugula, goat cheese, pistachio, sherry vinaigrette.</p>
+        </div>
+        <div class="menu-card">
+          <svg class="bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+            <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+            <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+            <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+            <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+            <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+            <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+            <path d="M70 56 Q76 52 80 58" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="tag">Bowl 3</span>
+          <h4>Charred Broccoli Caesar</h4>
+          <p>Charred broccoli, kale, parmesan, sourdough croutons, anchovy dressing.</p>
+        </div>
+        <div class="menu-card">
+          <svg class="bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+            <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+            <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+            <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+            <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+            <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+            <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+            <path d="M70 56 Q76 52 80 58" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="tag">Bowl 4</span>
+          <h4>Soba &amp; Crunchy Veg</h4>
+          <p>Cold soba, edamame, carrot, cucumber, sesame-ginger dressing, crushed peanuts.</p>
+        </div>
+        <div class="menu-card">
+          <svg class="bowl-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/>
+            <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+            <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+            <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+            <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+            <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+            <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+            <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+            <path d="M70 56 Q76 52 80 58" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          </svg>
+          <span class="tag">Bowl 5</span>
+          <h4>Harvest Grain</h4>
+          <p>Farro, roasted squash, dried cranberry, feta, toasted pepitas, maple-cider dressing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews" style="background:var(--paper-2);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">From subscribers</span>
+        <h2>What people actually say.</h2>
+      </div>
+      <div class="notes">
+        <div class="note">
+          <p>"Never soggy by day three like the meal-kit places. This one actually tastes like it was made that morning."</p>
+          <div class="who">— Priya M., Regular plan</div>
+        </div>
+        <div class="note">
+          <p>"I skip a week when I travel and it just works. No calls, no guilt, one tap in the email."</p>
+          <div class="who">— Daniel K., Starter plan</div>
+        </div>
+        <div class="note">
+          <p>"Five bowls a week for the whole office lunch rotation. Ordering got easy the day we found this."</p>
+          <div class="who">— Aiesha T., Family plan</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="cta-band">
+        <div>
+          <h2>Get next week's ticket.</h2>
+          <p>Leave your email and we'll send this week's full menu before bowls sell out.</p>
+        </div>
+        <form onsubmit="event.preventDefault(); this.reset(); alert('Thanks — check your inbox for this week\'s menu.');">
+          <input type="email" placeholder="you@email.com" required aria-label="Email address">
+          <button type="submit" class="btn">Notify me</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="logo" style="font-size:17px;">
+        <svg class="mark bowl-icon" style="width:24px;height:24px;" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="66" rx="38" ry="14" fill="var(--card)" stroke="var(--ink)" stroke-width="3"/>
+          <path d="M14 62 Q50 84 86 62" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M30 46 Q22 34 34 28 Q40 38 30 46Z" fill="var(--leaf)"/>
+          <path d="M50 42 Q46 28 60 26 Q62 40 50 42Z" fill="var(--leaf-2)"/>
+          <path d="M66 48 Q64 34 78 32 Q80 44 66 48Z" fill="var(--leaf)"/>
+          <circle cx="42" cy="52" r="6" fill="var(--citrus)"/>
+          <circle cx="60" cy="54" r="5" fill="var(--citrus)"/>
+          <ellipse cx="52" cy="60" rx="5" ry="3.5" fill="var(--gold)"/>
+          <ellipse cx="36" cy="60" rx="4" ry="3" fill="var(--gold)"/>
+          <path d="M70 56 Q76 52 80 58" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+        Savian's Kitchen
+      </div>
+      <div class="footer-links">
+        <a href="#how">How it works</a>
+        <a href="#plans">Plans</a>
+        <a href="#menu">This week</a>
+        <a href="#reviews">Reviews</a>
+      </div>
+      <div>© 2026 Savian's Kitchen. Fresh, built weekly.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('.mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => { mobileMenu.classList.remove('open'); burger.setAttribute('aria-expanded','false'); });
+  });
+</script>
+
+</body>
+</html>
